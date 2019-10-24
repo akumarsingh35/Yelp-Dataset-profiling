@@ -1,0 +1,350 @@
+1. Profiling of the data by finding the total number of records for each of the tables below:
+   All of the table from i to xi as mentioned in the problem statement contains 10000 records each.
+   Sql query used for finding the total number of records in each table:
+                    select count(*)
+                    from attribute;     --here 'attribute' is the table name, number of records in each table is found out by just changing the table name.
+
+2. Finding total number of distinct record.
+ i. Business table contains total 10000 distinct record
+     sql query used:
+                    select count(distinct id)   --here id is the primary key of business table.
+                             from business;
+ ii. Business table contains total 1562 distinct record.
+     sql query:  select count(distinct business_id) --here business_id is the foriegn key within the hours table.
+                          from hours;
+ iii.  Total 2643 records are contained in category table.
+       sql query: select count(distinct business_id)
+                          from category; 
+ iv. There are 1115 total distinct records in attribute table.
+    Sql query used: select count(distinct business_id)
+                         from attribute;
+ v.  10000 distinct record are there in review table
+     Sql query:                 select count(distinct id)
+                                from review;
+ vi. 493 distinct records in checkin table
+    Sql query:  select count(distinct business_id)
+                from checkin;
+ vii. 10000 distinct records are there in photo table
+     Sql query: select count(distinct id)
+                from photo;
+ viii. 537 distinct records were found using user_id foreign key in tip table
+      Sql query: select count(distinct user_id)
+            from tip;
+ xi. 10000 distinct records found using id as a foriegn key.
+    Sql query: select count(distinct id)
+                   from user;
+ x. 11 distinct records are there in friends table.
+   sql query: select count(distinct user_id) --user_id is primary key.
+              from friend;
+ xi. 2780 distinct records were found in elite_years table.
+    sql query: select count(distinct user_id) --user_id is primary key
+               from elite_years;
+3. No there is no null value in name and id column in user table.(Only name and id column is taken because only they are of varchar type,
+         id is not taken because it is primary key so it can't be null) 
+
+   Sql query used-     select sum(case when name is null then 1 else 0 end) AS name  --here if null value if null value is encountered than sum would add 1 and at last output would be total number of null value in that coulmn.
+                           from user;
+4.
+        i. Table: Review, Column: Stars
+	
+		min:1	max: 5	avg: 3.7082  
+           SQL query: select min(stars) AS minimum, max(stars) AS maximum, avg(stars) as average 
+                      from review;   --Alisas used are minimum, Maximum, Average
+		
+	
+	ii. Table: Business, Column: Stars
+	
+		min:1		max:5		avg:3.6549
+           Sql query: select min(stars) AS minimum, max(stars) AS maximum, avg(stars) as average
+                      from business; 
+		
+	
+	iii. Table: Tip, Column: Likes
+	
+		min:0		max:2		avg:0.0144
+            Sql Query: select min(likes) AS minimum, max(likes) AS maximum, avg(likes) as average
+                       from tip;     
+		
+	
+	iv. Table: Checkin, Column: Count
+	
+		min:1		max:53		avg:1.9414
+           SQL Query:       select min(count) AS minimum, max(count) AS maximum, avg(count) as average
+                            from checkin; 
+		
+	
+	v. Table: User, Column: Review_count
+	
+		min:0		max:200		avg:24.2995
+           SQL Query:    select min(review_count) AS minimum, max(review_count) AS maximum, avg(review_count) as average
+                          from user; 
+5. Listing the cities with the most reviews in descending order:
+
+	SQL code used to arrive at answer: select city, review_count
+                                           from business 
+                                           order by review_count DESC; 
+	Result:
++------------+--------------+
+| city       | review_count |
++------------+--------------+
+| Las Vegas  |         3873 |
+| Montréal   |         1757 |
+| Gilbert    |         1549 |
+| Las Vegas  |         1410 |
+| Las Vegas  |         1389 |
+| Las Vegas  |         1252 |
+| Las Vegas  |         1116 |
+| Las Vegas  |         1084 |
+| Las Vegas  |          961 |
+| Gilbert    |          902 |
+| Las Vegas  |          864 |
+| Scottsdale |          823 |
+| Las Vegas  |          821 |
+| Las Vegas  |          786 |
+| Henderson  |          785 |
+| Toronto    |          778 |
+| Las Vegas  |          768 |
+| Las Vegas  |          758 |
+| Scottsdale |          726 |
+| Cleveland  |          723 |
+| Las Vegas  |          720 |
+| Charlotte  |          715 |
+| Phoenix    |          711 |
+| Las Vegas  |          706 |
+| Phoenix    |          700 |
++------------+--------------+
+(Output limit exceeded, 25 of 10000 total rows shown)
+
+6. Finding the distribution of star ratings to the business in the following cities:
+
+i. Avon: there is no city named avon in the database
+
+   SQL code used to arrive at answer: select stars,review_count
+                                    from business 
+                                   where city='avon'; 
+
+
+ result: +-------+--------------+
+         | stars | review_count |
+         +-------+--------------+
+         +-------+--------------+
+         (Zero rows)
+
+
+ii. Beachwood, no city named beachwood is present in  the database.
+
+    SQL code used to arrive at answer:
+                                  select stars,review_count
+                                    from business 
+                                   where city='beachwood'; 
+        
+        result: +-------+--------------+
+                | stars | review_count |
+                +-------+--------------+
+                +-------+--------------+
+                (Zero rows)
+
+7. Finding the top 3 users based on their total number of reviews:
+		
+	SQL code used to arrive at answer:  select name,review_count
+                                            from business 
+                                            order by review_count DESC
+                                            limit 3; 
+	
+		
+	Result Below:    +------------------+--------------+
+                         | name             | review_count |
+                         +------------------+--------------+
+                         | The Buffet       |         3873 |
+                         | Schwartz's       |         1757 |
+                         | Joe's Farm Grill |         1549 |
+                         +------------------+--------------+
+
+
+8. Highest review_count is 2000 having fans= 253, found by using sql query-
+          select  review_count,fans
+         from user order by review_count DESC; 
+   while the maximum fan is 503 having review_count=609, found using sql query-
+          select  review_count,max(fans)
+          from user; 
+ Thus, posing more reviews does not correlate with more fans.
+
+9. Are there more reviews with the word "love" or with the word "hate" in them?
+
+	Answer: love has 1780 reviews
+                hate has 232 reviews
+
+	
+	SQL code used to arrive at answer:
+                SELECT COUNT(*)
+		FROM review									
+		WHERE text LIKE "%love%"  --for counting number of reviews for love
+
+                SELECT COUNT(*)
+	        FROM review
+                WHERE text LIKE "%hate%"  --for counting number of reviews for hate
+
+10. Top 10 users with most fans.
+    SQL Query: select name,fans
+               from user
+               order by fans DESC
+               limit 10; 
+    Result:
+    +-----------+------+
+    | name      | fans |
+    +-----------+------+
+    | Amy       |  503 |
+    | Mimi      |  497 |
+    | Harald    |  311 |
+    | Gerald    |  253 |
+    | Christine |  173 |
+    | Lisa      |  159 |
+    | Cat       |  133 |
+    | William   |  126 |
+    | Fran      |  124 |
+    | Lissa     |  120 |
+    +-----------+------+
+11.11. Is there a strong relationship (or correlation) between having a high number of fans and being listed as "useful" or "funny?" Out of the top 10 users with the highest number of fans,
+   what percent are also listed as “useful” or “funny”?
+   SQL code used to arrive at answer:
+   SELECT u.name, u.id, u.fans, u.useful, u.funny
+	FROM user u
+	GROUP BY u.fans
+	ORDER BY u.fans DESC
+
+	Copy and Paste the Result Below:
++-----------+------------------------+------+--------+--------+
+| name      | id                     | fans | useful |  funny |
++-----------+------------------------+------+--------+--------+
+| Amy       | -9I98YbNQnLdAmcYfb324Q |  503 |   3226 |   2554 |
+| Mimi      | -8EnCioUmDygAbsYZmTeRQ |  497 |    257 |    138 |
+| Harald    | --2vR0DIsmQ6WfcSzKWigw |  311 | 122921 | 122419 |
+| Gerald    | -G7Zkl1wIWBBmD0KRy_sCw |  253 |  17524 |   2324 |
+| Christine | -0IiMAZI2SsQ7VmyzJjokQ |  173 |   4834 |   6646 |
+| Lisa      | -g3XIcCb2b-BD0QBCcq2Sw |  159 |     48 |     13 |
+| Cat       | -9bbDysuiWeo2VShFJJtcw |  133 |   1062 |    672 |
+| William   | -FZBTkAZEXoP7CYvRV2ZwQ |  126 |   9363 |   9361 |
+| Fran      | -9da1xk7zgnnfO1uTVYGkA |  124 |   9851 |   7606 |
+| Lissa     | -lh59ko3dxChBSZ9U7LfUw |  120 |    455 |    150 |
+	
+	Please explain your findings and interpretation of the results: There is no correlation in having high number of fans and being listed as "useful" or "funny" as in case of 'harald'
+        who has been rated as uesful and funny quite high number of time but still his fans count is less than that of 'amy'.
+
+
+                                                                            PART-2
+
+1. Pick one city and category of your choice and group the businesses in that city or category by their overall star rating. 
+   Compare the businesses with 2-3 stars to the businesses with 4-5 stars and answer the following questions. Include your code.
+i. Do the two groups you chose to analyze have a different distribution of hours?
+   Answer- restraunts having ratings between 3-4 stars remains open usually during evening while restaurants having ratings between
+   2-3 stars usually remains open during office hours both office and have approximately same working hours i.e around 8 to 10 hrs.
+ii. Do the two groups you chose to analyze have a different number of reviews?
+   Answer- yes, group of restaurants having review between 2-3 stars tends to have more number of reviews than that of 4-3 stars.
+iii. Are you able to infer anything from the location data provided between these two groups? Explain.
+  Answer- yes, genrally restraunts in Downtown Core neighbourhood in toronto city have low ratings.
+  
+  SQL query used- SELECT b.city, c.category, h.hours,b.review_count, b.neighborhood,
+  case    WHEN b.stars BETWEEN '2' AND '3' then '2-3 stars'
+          WHEN b.stars BETWEEN '4' AND '5' then '3-4 stars'
+          end as ratings
+from business b inner join category c on b.id= c.business_id inner join hours h on h.business_id=b.id 
+where city="Toronto" and category="Restaurants" and stars !=('1' and '1.5' and '3.5' and '4.5' and '5');
+resut:-
+| city    | category    | hours                 | review_count | neighborhood  | ratings   |
++---------+-------------+-----------------------+--------------+---------------+-----------+
+| Toronto | Restaurants | Monday|16:00-2:00     |           26 | High Park     | 3-4 stars |
+| Toronto | Restaurants | Tuesday|18:00-2:00    |           26 | High Park     | 3-4 stars |
+| Toronto | Restaurants | Friday|18:00-2:00     |           26 | High Park     | 3-4 stars |
+| Toronto | Restaurants | Wednesday|18:00-2:00  |           26 | High Park     | 3-4 stars |
+| Toronto | Restaurants | Thursday|18:00-2:00   |           26 | High Park     | 3-4 stars |
+| Toronto | Restaurants | Sunday|16:00-2:00     |           26 | High Park     | 3-4 stars |
+| Toronto | Restaurants | Saturday|16:00-2:00   |           26 | High Park     | 3-4 stars |
+| Toronto | Restaurants | Monday|10:30-21:00    |           47 | Downtown Core | 2-3 stars |
+| Toronto | Restaurants | Tuesday|10:30-21:00   |           47 | Downtown Core | 2-3 stars |
+| Toronto | Restaurants | Friday|10:30-21:00    |           47 | Downtown Core | 2-3 stars |
+| Toronto | Restaurants | Wednesday|10:30-21:00 |           47 | Downtown Core | 2-3 stars |
+| Toronto | Restaurants | Thursday|10:30-21:00  |           47 | Downtown Core | 2-3 stars |
+| Toronto | Restaurants | Sunday|11:00-19:00    |           47 | Downtown Core | 2-3 stars |
+| Toronto | Restaurants | Saturday|10:30-21:00  |           47 | Downtown Core | 2-3 stars |
+| Toronto | Restaurants | Monday|11:00-23:00    |            8 | Etobicoke     | 3-4 stars |
+| Toronto | Restaurants | Tuesday|11:00-23:00   |            8 | Etobicoke     | 3-4 stars |
+| Toronto | Restaurants | Friday|11:00-23:00    |            8 | Etobicoke     | 3-4 stars |
+| Toronto | Restaurants | Wednesday|11:00-23:00 |            8 | Etobicoke     | 3-4 stars |
+| Toronto | Restaurants | Thursday|11:00-23:00  |            8 | Etobicoke     | 3-4 stars |
+| Toronto | Restaurants | Sunday|14:00-23:00    |            8 | Etobicoke     | 3-4 stars |
+| Toronto | Restaurants | Saturday|11:00-23:00  |            8 | Etobicoke     | 3-4 stars |
+| Toronto | Restaurants | Monday|11:00-23:00    |            5 | Downtown Core | 2-3 stars |
+| Toronto | Restaurants | Tuesday|11:00-23:00   |            5 | Downtown Core | 2-3 stars |
+| Toronto | Restaurants | Friday|11:00-23:00    |            5 | Downtown Core | 2-3 stars |
+| Toronto | Restaurants | Wednesday|11:00-23:00 |            5 | Downtown Core | 2-3 stars |
++---------+-------------+-----------------------+--------------+---------------+-----------+
+
+2. Group business based on the ones that are open and the ones that are closed. What differences can you find between the ones that are still open and the ones that are closed? List at least two differences and the SQL code you used to arrive at your answer.
+		
+i. Difference 1: There is more amount of distinct buisness id for open than for closed
+                  Closed: distinct(id)= 1520
+                  Open: distinct(id)=  8480
+         
+         
+ii. Difference 2:  The average star rating businesses that are open tends to be greater than
+		businesses that are closed.
+	
+			Open:   AVG(stars) = 3.679
+			Closed: AVG(stars) = 3.520
+  Query: SELECT COUNT(DISTINCT(id)),
+			   AVG(stars),
+			   is_open
+		FROM business
+		GROUP BY is_open
+         
+         
+ 3.  For this last part of your analysis, you are going to choose the type of analysis you want to conduct on the Yelp dataset and are going to prepare the data for analysis.
+
+Ideas for analysis include: Parsing out keywords and business attributes for sentiment analysis, clustering businesses to find commonalities or anomalies between them, predicting the overall star rating for a business, predicting the number of fans a user will have, and so on. These are just a few examples to get you started, so feel free to be creative and come up with your own problem you want to solve. Provide answers, in-line, to all of the following:
+	
+i. Indicate the type of analysis you chose to do:
+
+  Answer- Analysing the factors which causes a user to give high ratings for a business.  
+ii. Write 1-2 brief paragraphs on the type of data you will need for your analysis and why you chose that data:
+   Answer- To help business understand why users gives high rating to a business we require various data such a review_count which contains the total number of users who have
+   reviewed that particular business, high amount of review_count means high accuracy of the review. Categories helps in distinguishing which type of business it is. Some types of data
+   which helps us understand a users satisfaction are number of users who reviewed the business as useful,funny or cool. Date column helps us in analyzing the rating trend for a user in a 
+   particular business. Some other factors which i think can be a factor for high rating is location that's why city and state is included.
+
+iii. Output of your finished dataset:
+     
++---------------------+--------------+------------+-------+----------------------+-------+---------------------+--------+-------+------+
+| name                | review_count | city       | state | category             | stars | date                | useful | funny | cool |
++---------------------+--------------+------------+-------+----------------------+-------+---------------------+--------+-------+------+
+| Moondogs Pub        |            7 | Pittsburgh | PA    | Music Venues         |     2 | 2015-08-03 00:00:00 |      0 |     0 |    0 |
+| Moondogs Pub        |            7 | Pittsburgh | PA    | Arts & Entertainment |     2 | 2015-08-03 00:00:00 |      0 |     0 |    0 |
+| Moondogs Pub        |            7 | Pittsburgh | PA    | Nightlife            |     2 | 2015-08-03 00:00:00 |      0 |     0 |    0 |
+| West Side Market    |          723 | Cleveland  | OH    | Shopping             |     5 | 2017-03-10 00:00:00 |      1 |     1 |    1 |
+| West Side Market    |          723 | Cleveland  | OH    | Shopping             |     4 | 2016-04-25 00:00:00 |      0 |     0 |    0 |
+| West Side Market    |          723 | Cleveland  | OH    | Food                 |     5 | 2017-03-10 00:00:00 |      1 |     1 |    1 |
+| West Side Market    |          723 | Cleveland  | OH    | Food                 |     4 | 2016-04-25 00:00:00 |      0 |     0 |    0 |
+| West Side Market    |          723 | Cleveland  | OH    | Seafood Markets      |     5 | 2017-03-10 00:00:00 |      1 |     1 |    1 |
+| West Side Market    |          723 | Cleveland  | OH    | Seafood Markets      |     4 | 2016-04-25 00:00:00 |      0 |     0 |    0 |
+| West Side Market    |          723 | Cleveland  | OH    | Fruits & Veggies     |     5 | 2017-03-10 00:00:00 |      1 |     1 |    1 |
+| West Side Market    |          723 | Cleveland  | OH    | Fruits & Veggies     |     4 | 2016-04-25 00:00:00 |      0 |     0 |    0 |
+| West Side Market    |          723 | Cleveland  | OH    | Ethnic Food          |     5 | 2017-03-10 00:00:00 |      1 |     1 |    1 |
+| West Side Market    |          723 | Cleveland  | OH    | Ethnic Food          |     4 | 2016-04-25 00:00:00 |      0 |     0 |    0 |
+| West Side Market    |          723 | Cleveland  | OH    | Market Stalls        |     5 | 2017-03-10 00:00:00 |      1 |     1 |    1 |
+| West Side Market    |          723 | Cleveland  | OH    | Market Stalls        |     4 | 2016-04-25 00:00:00 |      0 |     0 |    0 |
+| West Side Market    |          723 | Cleveland  | OH    | Farmers Market       |     5 | 2017-03-10 00:00:00 |      1 |     1 |    1 |
+| West Side Market    |          723 | Cleveland  | OH    | Farmers Market       |     4 | 2016-04-25 00:00:00 |      0 |     0 |    0 |
+| West Side Market    |          723 | Cleveland  | OH    | Specialty Food       |     5 | 2017-03-10 00:00:00 |      1 |     1 |    1 |
+| West Side Market    |          723 | Cleveland  | OH    | Specialty Food       |     4 | 2016-04-25 00:00:00 |      0 |     0 |    0 |
+| West Side Market    |          723 | Cleveland  | OH    | Public Markets       |     5 | 2017-03-10 00:00:00 |      1 |     1 |    1 |
+| West Side Market    |          723 | Cleveland  | OH    | Public Markets       |     4 | 2016-04-25 00:00:00 |      0 |     0 |    0 |
+| West Side Market    |          723 | Cleveland  | OH    | Meat Shops           |     5 | 2017-03-10 00:00:00 |      1 |     1 |    1 |
+| West Side Market    |          723 | Cleveland  | OH    | Meat Shops           |     4 | 2016-04-25 00:00:00 |      0 |     0 |    0 |
+| Ashbridges Bay Park |           29 | Toronto    | ON    | Active Life          |     4 | 2009-08-02 00:00:00 |      6 |     6 |    4 |
+| Ashbridges Bay Park |           29 | Toronto    | ON    | Beaches              |     4 | 2009-08-02 00:00:00 |      6 |     6 |    4 |
++---------------------+--------------+------------+-------+----------------------+-------+---------------------+--------+-------+------+
+
+iv. Provide the SQL code you used to create your final dataset:
+     Answer:- SELECT b.name,b.review_count,b.city,b.state,c.category,r.stars,r.date,r.useful,r.funny,r.cool
+              from business b 
+              inner join category c on b.id=c.business_id 
+              inner join review r on b.id=r.business_id;
